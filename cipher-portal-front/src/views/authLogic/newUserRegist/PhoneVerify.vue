@@ -9,14 +9,14 @@
           <FormItem prop="phoneNumber"
                     class="phoneNumber">
             <Input v-model="formCustom.phoneNumber"
-                   placeholder="手机号"></Input>
+                   :placeholder="$t('common.phone')"></Input>
           </FormItem>
           <div class="code">
             <div>
               <FormItem prop="code"
                         :class="{'hiddenError':isHiddenError}">
                 <Input v-model="formCustom.code"
-                       placeholder="验证码"></Input>
+                       :placeholder="$t('common.SMSCode')"></Input>
                 <ErrorSf :msg="msg"></ErrorSf>
               </FormItem>
             </div>
@@ -26,11 +26,11 @@
             </div>
           </div>
           <div class="login">
-            <ButtonSf @click="handleSubmit('formCustom')">提交</ButtonSf>
+            <ButtonSf @click="handleSubmit('formCustom')">{{$t('common.submit')}}</ButtonSf>
           </div>
           <div class="skip"
                v-if="isSkipNumReg">
-            <span @click="skipNextPage">跳过</span>
+            <span @click="skipNextPage">{{$t('common.skip')}}</span>
           </div>
         </Form>
       </div>
@@ -190,16 +190,7 @@ export default {
     .code {
       text-align: left;
       margin-bottom: 50px;
-      /deep/ & > div {
-        display: inline-block;
-        width: 50%;
-      }
-      .getCode {
-        /deep/ span {
-          width: 100%;
-          margin-left: 2px;
-        }
-      }
+      position: relative;
     }
     /deep/ .login {
       margin-bottom: 42px;

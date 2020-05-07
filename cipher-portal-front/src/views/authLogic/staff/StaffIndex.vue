@@ -42,6 +42,8 @@ export default {
   padding-top: 10px;
   font-size: 28px;
   color: @colorBase8;
+  font-family: @fontBaseFamily;
+  width: 50%;
 }
 .main {
   .authLogicOuther;

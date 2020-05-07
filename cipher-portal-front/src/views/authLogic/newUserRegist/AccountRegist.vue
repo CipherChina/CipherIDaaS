@@ -9,27 +9,27 @@
           <FormItem prop="userName"
                     class="userName">
             <Input v-model="formCustom.userName"
-                   placeholder="姓名"></Input>
+                   :placeholder="$t('common.name')"></Input>
           </FormItem>
           <FormItem prop="phoneNumber"
                     class="phoneNumber">
             <Input v-model="formCustom.phoneNumber"
-                   placeholder="手机号"></Input>
+                   :placeholder="$t('common.phone')"></Input>
             <div class="notice"
-                 v-if="phoneNumberExist">该账号已经存在，请
+                 v-if="phoneNumberExist">{{$t('signUp.exist')}}
               <router-link class="notice"
-                           to="/authLogic/login/staff/">登录</router-link>
+                           to="/authLogic/login/staff/">{{$t('signUp.login')}}</router-link>
             </div>
             <!-- <ErrorSf :msg="msg"></ErrorSf> -->
           </FormItem>
-          <div class="login">
-            <ButtonSf @click="handleSubmitRegist('formCustom')">注册账号</ButtonSf>
-          </div>
-          <FormItem prop="clauseFlag"
+           <FormItem prop="clauseFlag"
                     class="clauseFlag">
             <Checkbox v-model="formCustom.clauseFlag"
-                      class="clause">注册即同意<span @click="clause">条款</span></Checkbox>
+                      class="clause">{{$t('signUp.agree')}}<span @click="clause">{{$t('signUp.law')}}</span></Checkbox>
           </FormItem>
+          <div class="login">
+            <ButtonSf @click="handleSubmitRegist('formCustom')">{{$t('common.signUp')}}</ButtonSf>
+          </div>
         </Form>
       </div>
     </AuthLogicBasic>
@@ -202,7 +202,6 @@ export default {
       margin-bottom: 23px;
     }
     /deep/ .phoneNumber {
-      margin-bottom: 50px;
       .notice {
         text-align: left;
         font-size: 14px;
@@ -216,12 +215,17 @@ export default {
       margin-bottom: 12px;
     }
     /deep/ .clauseFlag {
-      width: 180px;
-      margin: auto;
+      text-align: left;
+      margin-bottom: 50px;
+      /deep/ .ivu-form-item-content{
+        line-height: 1;
+        top: 2px;
+      }
       .clause {
-        font-size: 14px;
+        font-size: 12px;
+        color: @colorBase8;
         span {
-          color: @colorBase1;
+          color: @colorBase4;
         }
       }
       .ivu-form-item-error-tip {

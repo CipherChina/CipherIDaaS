@@ -10,26 +10,30 @@
             :rules="ruleCustom">
         <FormItem prop="accountNumber">
           <Input v-model="formCustom.accountNumber"
-                 placeholder="账号，手机号或者邮箱"></Input>
+                 :placeholder="$t('common.account')"></Input>
         </FormItem>
         <FormItem prop="pwd"
                   class="passwordVerifyCode">
-          <Input type="password"
+          <Input :type="pwdSetting.type"
                  v-model="formCustom.pwd"
-                 placeholder="密码"
-                 @on-enter="handleSubmitAccount('formCustom')"></Input>
+                 :placeholder="$t('common.pwd')"
+                 :icon="pwdSetting.pwdIcon"
+                 @click.native="changePwdType"
+                 @on-enter="handleSubmitAccount('formCustom')">
+          </Input>
           <div class="verifyMode">
             <span class="errorMsg"
                   :class="{'only-error':authLogic.modes.otherAuthNum}">{{errorMsgAccount}}</span>
-            <span class="accountAuth"
-                  v-if="!authLogic.modes.otherAuthNum">
-              <span @click="switchLoginWay(false)">手机随机码登录</span>
-            </span>
           </div>
         </FormItem>
+        <div class="else-info">
+          <span @click="switchLoginWay(false)" class="accountAuth"
+            v-if="!authLogic.modes.otherAuthNum">{{$t('login.mobileLogin')}}</span>
+          <Checkbox v-model="rememberLogin" class="remember">{{$t('login.remember')}}</Checkbox>
+        </div>
         <FormItem class="login">
           <Button type="primary"
-                  @click="handleSubmitAccount('formCustom')">登录</Button>
+                  @click="handleSubmitAccount('formCustom')">{{$t('common.signIn')}}</Button>
         </FormItem>
       </Form>
       <!-- 手机验证码登录 -->
@@ -40,35 +44,44 @@
             :rules="ruleCustomVerify">
         <FormItem prop="phoneNumber">
           <Input v-model="formCustomVerify.phoneNumber"
-                 placeholder="手机号"></Input>
+                :placeholder="$t('common.phone')"></Input>
         </FormItem>
-        <div class="code passwordVerifyCode">
-          <div class="inputCode"
+        
+        <div class="code"
                :class="{'hiddenError':isHiddenError}">
             <FormItem prop="verifyCode">
               <Input v-model="formCustomVerify.verifyCode"
-                     placeholder="验证码"></Input>
+                     :placeholder="$t('common.SMSCode')"></Input>
             </FormItem>
-          </div>
-          <div class="getCode">
-            <ButtonCode @click="getCode"
-                        ref="timerbtn"></ButtonCode>
-          </div>
-          <div class="verifyMode">
-            <span class="errorMsg">{{errorMsgVerify}}</span>
-            <span class="accountAuth"
-                  v-if="!authLogic.modes.otherAuthNum">
-              <span @click="switchLoginWay(true)">账号密码登录</span>
-            </span>
-          </div>
+            <div class="getCode">
+              <ButtonCode @click="getCode"
+                          ref="timerbtn"></ButtonCode>
+            </div>
+            <div class="verifyMode">
+              <span class="errorMsg">{{errorMsgVerify}}</span>
+            </div>
+            <div class="else-info">
+              <span class="accountAuth"  @click="switchLoginWay(true)" v-if="!authLogic.modes.otherAuthNum">{{$t('login.accountLogin')}}</span>
+            </div>
         </div>
         <FormItem class="login">
           <Button type="primary"
-                  @click="handleSubmitVerify('formCustomVerify')">登录</Button>
+                  @click="handleSubmitVerify('formCustomVerify')">{{$t('common.signIn')}}</Button>
         </FormItem>
       </Form>
+       <div class="regist-forget"
+           v-if="isRegist">
+        <router-link to="/authLogic/newUserRegist/accountRegist">
+          <span class="select" v-if="isRegist">{{ $t("login.signUp")}}</span>
+        </router-link>
+        <span v-if="isRegist&&isForget" class="tag"></span>
+        <span class="select"
+              @click="getForgetPasswordFlow" v-if="isForget">{{$t('login.forget')}}</span>
+      </div>
       <p class="otherLoginText"
-         v-if="logoLength!==0">使用其它方式登录</p>
+        v-if="logoLength!==0">
+        <span class="text">{{$t('common.otherLogin')}}<Icon type="ios-arrow-down" /></span>
+      </p>
       <div class="otherLogin">
         <template v-for="item in logoItems">
           <span :key="item.index"
@@ -80,15 +93,6 @@
           </span>
         </template>
       </div>
-      <div class="regist"
-           v-if="isRegist">
-        <router-link to="/authLogic/newUserRegist/accountRegist">
-          <span class="select">注册</span>
-        </router-link>
-      </div>
-      <div class="forget"
-           v-if="isForget"><span class="select"
-              @click="getForgetPasswordFlow">忘记密码</span></div>
     </div>
   </div>
 </template>
@@ -151,10 +155,15 @@ export default {
       callback();
     };
     return {
+      rememberLogin: false, // 是否记住用户名
       errorMsgAccount: "", // 账户密码方式后端接口返回错误信息
       errorMsgVerify: "", // 手机验证码方式后端接口返回错误信息
       isHiddenError: false, // 验证码input验证自带信息是否显示
       accountFlag: true, // true账号登录，false手机随机码登录
+      pwdSetting:{
+        type:"password",
+        pwdIcon:"ios-eye-outline"
+      },
       // 账号密码登录
       formCustom: {
         accountNumber: "",
@@ -206,7 +215,19 @@ export default {
     },
     ...mapState({ authLogic: "authLogic" })
   },
+  created(){
+    let userInfo=this.setStorage("userInfo");
+    if(userInfo){
+      this.formCustom.accountNumber=userInfo.accountNumber;
+      this.formCustom.pwd=userInfo.pwd;
+    }
+  },
   methods: {
+    // input密码状态切换
+    changePwdType () {
+      this.pwdSetting.type=this.pwdSetting.type==="password"?"text":"password";
+      this.pwdSetting.pwdIcon=this.pwdSetting.pwdIcon==="ios-eye-outline"?"ios-eye-off-outline":"ios-eye-outline";
+    },
     // 切换登录方式：1.账号密码登录;2.手机随机码登录
     switchLoginWay (flag) {
       this.accountFlag = flag;
@@ -234,6 +255,12 @@ export default {
             ) {
               // 清除错误信息
               this.errorMsgAccount = "";
+              if (this.rememberLogin === true) {
+                // 传入保存的key值，保存值，和保存天数3个参数
+                this.setStorage("userInfo",params, 7);
+              } else {
+                localStorage.removeItem('userinfo')
+              }
               this.loginSkip(response);
             } else {
               let errorMsg = response.data.return_msg;
@@ -379,6 +406,29 @@ export default {
       let getForgetSkipPath = skipPathUtil.fogetPWSkipNextPage(authLogic.forgetPwdFlow, 1);
       this.$router.push(getForgetSkipPath);
     },
+    // set Storage
+    setStorage(name,value,expires){
+      var time = new Date();
+      time.setTime(time.getTime()+expires*60*60*1000);
+      if(localStorage.getItem(name)){
+        return;
+      }
+      localStorage.setItem(name,JSON.stringify({value:value,expires:time.getTime()}));
+    }, 
+    getStorage(name){
+      var storages = localStorage.getItem(name);
+      if(!storages) return;
+      storages = JSON.parse(storages);
+      var expires =  storages.expires;
+      var currTime = new Date();
+      currTime = currTime.getTime();
+      if(currTime - expires >= 0){
+        localStorage.removeItem(name);
+        return undefined;
+      }else{
+        return storages.value;
+      }
+    } ,
     ...mapMutations(["changeAuthLogic"])
   }
 };
@@ -388,20 +438,17 @@ export default {
 @import "~@/assets/styles/authLogic/common.less";
 .body {
   .titleLevel1;
-  border: @borderColor;
-  // width: 40%;
   margin: auto;
-  // min-width: 250px;
   width: 380px;
-  border-radius: @borderRadius8;
-  padding: 15px 40px 25px 40px;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.1);
+  padding: 25px 38px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   .loginHomeTitle {
-    margin-top: 15px;
-    margin-bottom: 45px;
+    margin-bottom: 40px;
   }
   // .titleLevel3 {
   //   margin-bottom: 45px;
@@ -432,15 +479,22 @@ export default {
       .hidden {
         visibility: hidden;
       }
-      .accountAuth {
-        color: @colorBase7;
-        text-align: right;
-        font-size: 12px;
-        & > span {
-          cursor: pointer;
-        }
-      }
     }
+  }
+  .else-info{
+    position: relative;
+    top:-19px;
+    .clear;
+    line-height: 1;
+    .accountAuth{
+      float: left;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .remember{
+      float: right;
+    }
+
   }
   .login {
     margin-bottom: 0px;
@@ -453,62 +507,43 @@ export default {
       }
     }
   }
-  .otherLoginText {
-    color: @colorBase2;
-    font-size: @fontSize12;
-    padding: 15px 0 5px 0;
-  }
   .otherLogin {
     .scanLogin;
   }
-  .regist {
-    .select {
-      color: @colorBase7;
-      font-size: @fontSize14;
-      &:hover {
-        .mouseHover;
-      }
-    }
-  }
-  .forget {
-    span {
+  .regist-forget{
+    margin-top:10px;
+   .select {
+      color: @colorBase8;
       font-size: @fontSize12;
-    }
-    .select {
-      color: @colorBase7;
+      text-decoration: none;
       &:hover {
         .mouseHover;
       }
     }
+    .tag{
+      display: inline-block;
+      width:1px;
+      height:12px;
+      background:rgba(223,225,230,1);
+      margin:0 26px;
+    }
   }
-  // 手机随机码
+  //机随机码
   .code {
     position: relative;
     text-align: left;
-    /deep/ & > div {
-      display: inline-block;
-      width: 48%;
-    }
-    .inputCode {
-      div {
-        margin-bottom: 0px;
-      }
-      /deep/ input {
-        top: -3px;
-      }
-    }
-    .getCode {
-      position: relative;
-      right: -10px;
-      /deep/ span {
-        width: 100% !important;
-        height: 44px;
-        line-height: 44px;
-        font-size: 14px;
-      }
-    }
     .verifyMode {
-      bottom: -20px;
+      position: absolute;
+      top:30px;
+      .errorMsg {
+        color: @colorError;
+        font-size: 12px;
+        text-align: left;
+      }
+    }
+    .else-info{
+      margin-top:42px;
+      top:-22px;
     }
   }
 }

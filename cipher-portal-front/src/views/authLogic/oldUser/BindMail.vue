@@ -9,14 +9,14 @@
           <FormItem prop="mail"
                     class="mail">
             <Input v-model="formCustom.mail"
-                   placeholder="邮箱"></Input>
+                   :placeholder="$t('common.mail')"></Input>
           </FormItem>
           <div class="code">
             <div>
               <FormItem prop="code"
                         :class="{'hiddenError':isHiddenError}">
                 <Input v-model="formCustom.code"
-                       placeholder="验证码"></Input>
+                       :placeholder="$t('common.SMSCode')"></Input>
                 <ErrorSf :msg="msg"></ErrorSf>
               </FormItem>
             </div>
@@ -197,17 +197,6 @@ export default {
     display: none;
   }
   form {
-    .code {
-      text-align: left;
-      margin-bottom: 50px;
-      /deep/ & > div {
-        display: inline-block;
-        width: 50%;
-      }
-      .getCode {
-        text-align: right;
-      }
-    }
     /deep/ .login {
       margin-bottom: 42px;
     }
