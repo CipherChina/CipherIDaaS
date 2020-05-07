@@ -2,6 +2,11 @@
   <div>
     <AuthLogicBasic>
       <div class="main">
+        <div class="accountVerify">
+          <Tooltip content="密码登录" placement="left">
+              <router-link to="/authLogic/login/staff"><img :src="qrUrl"/></router-link>
+          </Tooltip>
+      </div>
         <div class="scanCode">
           <!-- 钉钉扫码 -->
           <div class="dingdingConter">
@@ -32,7 +37,7 @@
                   :rules="ruleCustom">
               <FormItem prop="accountNumber">
                 <Input v-model="formCustom.accountNumber"
-                       placeholder="账号，手机号或者邮箱"></Input>
+                       :placeholder="$t('common.account')"></Input>
               </FormItem>
               <FormItem prop="otp">
                 <Input v-model="formCustom.otp"
@@ -40,7 +45,7 @@
                 <ErrorSf :msg="msg"></ErrorSf>
               </FormItem>
               <div class="login">
-                <ButtonSf @click="handleSubmit('formCustom')">提交</ButtonSf>
+                <ButtonSf @click="handleSubmit('formCustom')">{{$t('common.submit')}}</ButtonSf>
               </div>
             </Form>
           </template>
@@ -56,6 +61,10 @@
               <span @click="refresh">刷新</span>
             </span>
           </div>
+          <p class="otherLoginText"
+            v-if="logoItems.length!==0">
+            <span class="text">{{$t('common.otherLogin')}}<Icon type="ios-arrow-down" /></span>
+          </p>
           <template v-for="item in logoItems">
             <span v-if="item.show"
                   :key="item.index"
@@ -65,9 +74,6 @@
                   @click="clickLogo(item)">
             </span>
           </template>
-        </div>
-        <div class="accountVerify">
-          <router-link to="/authLogic/login/staff">使用账号验证</router-link>
         </div>
       </div>
     </AuthLogicBasic>
@@ -114,6 +120,7 @@ export default {
       callback();
     };
     return {
+      qrUrl: require("@/assets/img/qr-code.png"),
       loadingState: false,
       msg: "",
       scanWay: "", // 扫码方式
@@ -650,11 +657,32 @@ export default {
 @import "~@/assets/styles/authLogic/common.less";
 .main {
   .authLogicOuther;
-  border: @borderColor;
   .formsBody;
+  .accountVerify{
+    text-align: right;
+    position: relative;
+    top:10px;
+    right: -20px;
+    /deep/ .ivu-tooltip-arrow{
+      width: 8px;
+      height: 8px;
+      transform: rotate(45deg);
+      background: #DEEFFF;
+      border:solid #99CEFF;
+      border-width: 1px 1px 0 0;
+      right: 5px;
+
+    }
+    /deep/ .ivu-tooltip-inner{
+      background: #DEEFFF;
+      color: #2196FF;
+      border:1px solid #99CEFF;
+      box-shadow:0 0 0 0;
+      border-radius: 0;
+    }
+  }
   .scan {
     position: relative;
-    margin-top: 30px;
     .scanRefresh {
       font-size: 14px;
       color: #898d90;
@@ -676,7 +704,7 @@ export default {
   }
   .scanCode {
     height: 250px;
-    margin-top: 78px;
+    margin-top: 50px;
     #dingding {
       position: relative;
       top: -45px;
@@ -695,15 +723,6 @@ export default {
   .dingdingTitle {
     font-size: 18px;
     margin-top: -26px;
-  }
-  .accountVerify {
-    margin-top: 48px;
-    font-size: 14px;
-    position: relative;
-    z-index: 1;
-    a {
-      color: @colorBase6;
-    }
   }
 }
 </style>

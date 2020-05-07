@@ -1,12 +1,12 @@
 // 基本颜色
 @colorBase1: #4a90e2;
-@colorBase2: #9b9b9b;
+@colorBase2: #666A75;
 @colorBase3: #4f6971;
-@colorBase4: #81cfe6;
+@colorBase4: #2196FF;
 @colorBase5: #cbcbcb;
 @colorBase6: #2a6ce2;
 @colorBase7: #4a90e2;
-@colorBase8: #93c0cd;
+@colorBase8: #333;
 @colorBase9: #eaeaea;
 @colorError: #d0021b;
 
@@ -18,10 +18,14 @@
 @fontSize20: 20px;
 @fontSize24: 24px;
 
+// 字体
+@fontBaseFamily:"AlibabaPuHuiTiM";
+
 // 边框
 @borderRadius8: 8px;
 @borderColor: 3px solid #78c1d6; // 边框
-@inputBorder: 2px solid #78c1d6; // input边框
+@inputBorder: 1px solid #DFE1E6; // input边框
+@inputHoverBorderColor:#8A8E99;
 
 // 用户首页，管理员首页，新用户注册，新用户扫码绑定，老用户扫码登录等窗体外层容器定位
 .authLogicOuther {
@@ -34,9 +38,8 @@
 }
 
 .titleLevel1 {
-  font-size: 16px;
+  font-size: 18px;
   color: @colorBase8;
-  font-weight: 500;
 }
 
 
@@ -52,24 +55,42 @@
 
 /deep/ input {
   font-size: 14px;
-  height: 44px;
-  text-align: center;
-  color: #c1dae2;
+  height: 34px;
   border: @inputBorder;
 }
 
-.code /deep/ input {
-  width: 140px;
-  color: @colorBase8;
-  font-size: 14px;
+/deep/ .ivu-input{
   border: @inputBorder;
-  height: 44px;
-  top: -3px;
+  border-width: 0 0 1px 0;
+  border-radius: 0;
+}
+/deep/ .ivu-input:hover {
+  border-color: @inputHoverBorderColor;
+}
+/deep/ .ivu-form-item-error .ivu-input:focus,/deep/ .ivu-input:focus{
+  border-color: @inputHoverBorderColor;
+  outline: 0;
+  box-shadow: 0 0 0 0 !important;
+}
+
+/deep/ .ivu-input::placeholder {
+  color: #999;
+}
+/deep/ input:-webkit-autofill,/deep/ input:-webkit-autofill:focus {
+	-webkit-box-shadow:0 0 0 1000px white inset !important;
+}
+/deep/ input:-internal-autofill-previewed,
+/deep/ input:-internal-autofill-selected {
+    -webkit-text-fill-color: #999 !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+/deep/ .ivu-input[disabled], /deep/ fieldset[disabled] .ivu-input{
+  background-color: #fff;
 }
 
 /deep/ button {
-  width: 212px;
-  height: 44px;
+  width: 304px;
+  height: 36px;
 }
 
 .qrCode {
@@ -107,14 +128,10 @@
 // 新用户注册，新用户扫码绑定，老用户扫码登录等窗体
 .formsBody {
   width: 380px;
-  height: 490px;
-  padding: 0 33px;
-  border: @borderColor;
-  border-radius: @borderRadius8;
-  // /deep/ input {
-  //   font-size: 14px !important;
-  //   height: 44px !important;
-  // }
+  height: 460px;
+  padding: 0 30px;
+  box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 // 扫码登录
@@ -172,4 +189,64 @@
 
 .selActiveScale {
   .activeBase(0.5, 1.2);
+}
+.clear:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.clear {
+  zoom: 1;
+}
+.can-bind-otp-style{
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #2196FF;
+  cursor: pointer;
+  &::before{
+    content:'';
+    display: inline-block;
+    width:1px;
+    height:19px;
+    background:#DFE1E6;
+    margin: 0 10px;
+    position: relative;
+    top: 6px;
+  }
+}
+.common-button{
+  color: #fff;
+  background-color: #2196FF;
+  font-size: 14px;
+  display: inline-block;
+  width: 304px;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.otherLoginText {
+  color: @colorBase2;
+  font-size: @fontSize12;
+  padding: 15px 0;
+  &:before,&:after{
+    content: '';
+    display: inline-block;
+    width:90px;
+    height:1px;
+    background:#ddd;
+    position: relative;
+    top: -5px;
+  }
+  .text{
+    padding: 0 8px;
+  }
+}
+.main form .code{
+  position: relative;
+  margin-bottom: 50px;
 }

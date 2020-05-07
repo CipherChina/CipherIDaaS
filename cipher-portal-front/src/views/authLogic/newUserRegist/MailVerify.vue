@@ -190,16 +190,7 @@ export default {
     .code {
       text-align: left;
       margin-bottom: 50px;
-      /deep/ & > div {
-        display: inline-block;
-        width: 50%;
-      }
-      .getCode {
-        /deep/ span {
-          width: 100%;
-          margin-left: 2px;
-        }
-      }
+      position: relative;
     }
     /deep/ .login {
       margin-bottom: 42px;

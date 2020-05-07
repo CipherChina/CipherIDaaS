@@ -9,13 +9,13 @@
           <FormItem prop="accountNumber"
                     class="accountNumber">
             <Input v-model="formCustom.accountNumber"
-                   placeholder="账号，手机号，邮箱"></Input>
+                   :placeholder="$t('common.account')"></Input>
           </FormItem>
           <FormItem prop="pwd"
                     class="pwd">
             <Input v-model="formCustom.pwd"
                    type="password"
-                   placeholder="密码"></Input>
+                   :placeholder="$t('common.pwd')"></Input>
             <ErrorSf :msg="msg"></ErrorSf>
           </FormItem>
           <div class="login">

@@ -3,7 +3,7 @@
     <AuthLogicBasic>
       <div class="main">
         <p class="title titleLevel1">
-          CipherChina <br />安全登录
+          CipherChina <br />{{$t('coomon.title')}}
         </p>
         <p class="content">
           <template v-if="isPushing">

@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     text: function () {
-      return this.time > 0 ? "重新获取 (" + this.time + "s)" : "获取验证码";
+      return this.time > 0 ? this.$t('common.resentCode')+" (" + this.time + "s)" : this.$t('common.sentCode');
     }
   }
 };
@@ -62,19 +62,24 @@ export default {
 
 <style lang="less" scoped>
 span {
-  color: #fff;
-  background-color: #81cfe6;
-  font-size: 14px;
-  display: inline-block;
-  width: 140px;
-  text-align: center;
-  height: 44px;
-  line-height: 44px;
-  border-radius: 5px;
+  color: #2196FF;
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  &::before{
+    content:'';
+    display: inline-block;
+    width:1px;
+    height:19px;
+    background:#DFE1E6;
+    margin: 0 10px;
+    position: relative;
+    top: 6px;
+  }
 }
 .disabled {
-  background-color: #c5c8ce;
   pointer-events: none;
   cursor: not-allowed;
 }

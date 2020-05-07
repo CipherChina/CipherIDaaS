@@ -197,17 +197,6 @@ export default {
     display: none;
   }
   form {
-    .code {
-      text-align: left;
-      margin-bottom: 50px;
-      /deep/ & > div {
-        display: inline-block;
-        width: 50%;
-      }
-      .getCode {
-        text-align: right;
-      }
-    }
     /deep/ .login {
       margin-bottom: 42px;
     }

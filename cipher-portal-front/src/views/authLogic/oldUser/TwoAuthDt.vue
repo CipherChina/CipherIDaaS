@@ -24,7 +24,7 @@
                  @click="getOtpQrcode">获取动态密码</div>
           </FormItem>
           <div class="login">
-            <ButtonSf @click="handleSubmit('formCustom')">提交</ButtonSf>
+            <ButtonSf @click="handleSubmit('formCustom')">{{$t('common.submit')}}</ButtonSf>
           </div>
         </Form>
         <div v-if="errorNoticeObj.errorNotice"
@@ -166,10 +166,7 @@ export default {
   width: 100%;
 }
 .can-bind-otp {
-  position: absolute;
-  right: 0;
-  bottom: -28px;
-  cursor: pointer;
+ .can-bind-otp-style;
 }
 .modal {
   position: absolute;

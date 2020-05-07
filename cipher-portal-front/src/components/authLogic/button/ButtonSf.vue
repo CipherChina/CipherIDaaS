@@ -19,14 +19,14 @@ export default {
 <style lang="less" scoped>
 span {
   color: #fff;
-  background-color: #81cfe6;
-  font-size: 16px;
+  background-color: #2196FF;
+  font-size: 14px;
   display: inline-block;
-  width: 212px;
-  height: 44px;
-  line-height: 44px;
+  width: 100%;
   text-align: center;
-  border-radius: 5px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 2px;
   cursor: pointer;
 }
 </style>

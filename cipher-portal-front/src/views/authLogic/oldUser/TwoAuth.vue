@@ -2,7 +2,7 @@
   <div>
     <AuthLogicBasic>
       <div class="main">
-        <p class="title titleLevel1">安全认证</p>
+        <p class="title titleLevel1">{{$t('common.title')}}</p>
         <div class="content">
           <!-- 钉钉、企业微信报错 -->
           <div v-if="errorObj.dingNotice &&  (activeName==='dingDing' || activeName==='wx')"
@@ -22,7 +22,8 @@
           <Form ref="formDt"
                 v-if="activeName==='dtCode'"
                 :model="formDt"
-                :rules="ruleDt">
+                :rules="ruleDt"
+                class="code">
             <FormItem prop="code">
               <Tooltip content="请打开赛赋TOTP小程序查看动态密码"
                        placement="right"
@@ -201,19 +202,19 @@ export default {
       let logoArray = [];
       let secondLoginInfo = this.authLogic.secondLoginInfo;
       if (secondLoginInfo.twoAuthDd === 0) {
-        logoArray.push({ name: "dingDing", logo: require("@/assets/img/two-auth-dingDing.png"), text: "钉钉扫码" });
+        logoArray.push({ name: "dingDing", logo: require("@/assets/img/two-auth-dingDing.png"), text:this.$t('otherWay.dingTalk')});
       }
       if (secondLoginInfo.twoAuthDt === 0) {
-        logoArray.push({ name: "dtCode", logo: require("@/assets/img/two-auth-dtCode.png"), text: "动态码" });
+        logoArray.push({ name: "dtCode", logo: require("@/assets/img/two-auth-dtCode.png"), text: this.$t('otherWay.OPT') });
       }
       if (secondLoginInfo.twoAuthNum === 0) {
-        logoArray.push({ name: "phoneCode", logo: require("@/assets/img/two-auth-phoneCode.png"), text: "短信随机码" });
+        logoArray.push({ name: "phoneCode", logo: require("@/assets/img/two-auth-phoneCode.png"), text: this.$t('otherWay.SMS') });
       }
       if (secondLoginInfo.twoAuthDingPush === 0) {
         logoArray.push({ name: "dingPush", logo: require("@/assets/img/two-auth-dingPush.png"), text: "DingPush" });
       }
       if (secondLoginInfo.twoAuthWx === 0) {
-        logoArray.push({ name: "wx", logo: require("@/assets/img/two-auth-wx.png"), text: "企业微信" });
+        logoArray.push({ name: "wx", logo: require("@/assets/img/two-auth-wx.png"), text: this.$t('otherWay.weChat') });
       }
       return logoArray;
     },
@@ -647,18 +648,18 @@ export default {
     }
   }
   .footer {
-    margin: 0 -28px 24px;
+    margin: 0 -24px 24px;
     width: 364px;
     overflow: hidden;
     position: relative;
     .footer-choose {
-      width: 430px;
+      width: 450px;
       transition: all 0.3s;
       .footer-choose-item {
         width: 70px;
         float: left;
         text-align: center;
-        margin: 0 8px;
+        margin: 0 10px;
         .footer-img {
           position: relative;
           width: 56px;
@@ -703,15 +704,9 @@ export default {
 }
 form {
   width: 100%;
-  .code {
-    text-align: left;
-    /deep/ & > div {
-      display: inline-block;
-      width: 50%;
-    }
-    .getCode {
-      text-align: right;
-    }
+  .code{
+    position: relative;
+    margin-bottom: 50px;
   }
 }
 .hiddenError /deep/ .ivu-form-item-error-tip {
@@ -729,10 +724,7 @@ form {
   width: 100%;
 }
 .can-bind-otp {
-  position: absolute;
-  right: 0;
-  bottom: -28px;
-  cursor: pointer;
+  .can-bind-otp-style;
 }
 .modal {
   position: absolute;
@@ -791,7 +783,7 @@ form {
   padding: 10px 0;
   position: absolute;
   width: 100%;
-  top: 0;
-  text-align: center;
+  top: 21px;
+  text-align: left;
 }
 </style>

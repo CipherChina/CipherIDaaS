@@ -4,8 +4,8 @@
       <div class="main">
         <img src="@/assets/img/authLogic/logo.png"
              alt="">
-        <div class="titleLevel1 titleTop">申请成功</div>
-        <div class="titleLevel2">等待管理员审核</div>
+        <div class="titleLevel1 titleTop">{{$t('signUp.success')}}</div>
+        <div class="titleLevel2">{{$t('signUp.wait')}}</div>
       </div>
     </AuthLogicBasic>
   </div>

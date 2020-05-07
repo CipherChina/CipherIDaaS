@@ -6,6 +6,7 @@ import axios from "./http";
 // import axios from "axios";
 import common from "@/util/common.js";
 import qs from "qs";
+import i18n from './lang'
 
 import iView from "iview";
 import "iview/dist/styles/iview.css";
@@ -82,5 +83,6 @@ new Vue({
   router,
   store,
   axios,
+  i18n,
   render: h => h(App)
 }).$mount("#app");
